@@ -23,7 +23,8 @@ public class AuthServlet extends HttpServlet {
 
         if (!accountService.getUsersMap().containsKey(login) ||
                 !(accountService.getUsersMap().get(login)).getPassword().equals(password)) {
-            printWriter.write("Wrong login/password");
+            resp.setStatus(401);
+            printWriter.write("401 Unauthorized. Missing login:password combination");
         } else {
             printWriter.write("Hello, " + login);
         }

@@ -2,7 +2,6 @@ package data;
 
 public class UserProfile {
     private String login;
-    private String email;
     private String password;
 
     public void setLogin(String login) {
@@ -11,10 +10,6 @@ public class UserProfile {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPassword() {

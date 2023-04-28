@@ -18,15 +18,21 @@ public class RegistryServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-        String email = req.getParameter("email");
         resp.setContentType("text/html");
         PrintWriter printWriter = resp.getWriter();
 
+        if (login == null || password == null) {
+            resp.setStatus(400);
+            printWriter.write("400 Bad Request. Empty Login/Password field.");
+            return;
+        }
+
         if (!accountService.getUsersMap().containsKey(login)) {
-            accountService.registry(login, password, email);
+            accountService.registry(login, password);
             printWriter.write(login + ", registry successfully");
         } else {
-            printWriter.write("Login \"" + login + "\" is already used");
+            resp.setStatus(409);
+            printWriter.write("409 Conflict. Login \"" + login + "\" is already used");
         }
         printWriter.close();
     }
