@@ -1,5 +1,6 @@
 package servlets;
 
+import data.AccountDataSet;
 import data.AccountService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,14 +13,16 @@ import java.io.PrintWriter;
 
 @WebServlet("/registry")
 public class RegistryServlet extends HttpServlet {
-    AccountService accountService = new AccountService();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         resp.setContentType("text/html");
         PrintWriter printWriter = resp.getWriter();
+
+        AccountService accountService = new AccountService();
+        AccountDataSet account = new AccountDataSet(login, password);
 
         if (login == null || password == null) {
             resp.setStatus(400);
@@ -27,8 +30,8 @@ public class RegistryServlet extends HttpServlet {
             return;
         }
 
-        if (!accountService.getUsersMap().containsKey(login)) {
-            accountService.registry(login, password);
+        if (accountService.findAccountInDB(login) == null) {
+            accountService.registry(account);
             printWriter.write(login + ", registry successfully");
         } else {
             resp.setStatus(409);

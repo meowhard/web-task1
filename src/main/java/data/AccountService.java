@@ -1,24 +1,29 @@
 package data;
 
-import java.util.HashMap;
-import java.util.Map;
+/**
+ * Класс, содержащий реализацию поиска данных в postgresql таблице через {@link data.AccountDAO}
+ * @author meowhard
+ * @version 1.0
+ */
 
 public class AccountService {
+    /** DAO для связи с таблицей accounts */
+    private final AccountDAO accountDAO = new AccountDAO();
 
-    private static final Map<String, UserProfile> usersMap = new HashMap<>();
-
-    public void registry(String login, String password) {
-        UserProfile userProfile = new UserProfile();
-        userProfile.setLogin(login);
-        userProfile.setPassword(password);
-        usersMap.put(login, userProfile);
+    /**
+     * Находит пользователя в таблице по его логину
+     * @param login логин аккаунта, который необходисо найти в таблице "accounts"
+     * @return {@link AccountDataSet}, содержащий данные пользователя "login"
+     */
+    public AccountDataSet findAccountInDB(String login) {
+        return accountDAO.findByLogin(login);
     }
 
-    public void auth() {
-
-    }
-
-    public Map<String, UserProfile> getUsersMap() {
-        return usersMap;
+    /**
+     * Регистрирует пользователя, вносит его данные в таблицу "accounts"
+     * @param account {@link AccountDataSet}
+     */
+    public void registry(AccountDataSet account) {
+        accountDAO.save(account);
     }
 }

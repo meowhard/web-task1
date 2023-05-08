@@ -7,8 +7,7 @@ import servlets.AuthServlet;
 import servlets.RegistryServlet;
 import servlets.RequestServlet;
 
-public class Main
-{
+public class Main {
     public static void main( String[] args ) throws Exception {
         RegistryServlet registryServlet = new RegistryServlet();
         AuthServlet authServlet = new AuthServlet();

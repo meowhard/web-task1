@@ -4,14 +4,15 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 public class AccountDAO {
-    public Account findByLogin(String login) {
-        return HibernateSessionFactory.getSessionFactory().openSession().get(Account.class, login);
+    public AccountDataSet findByLogin(String login) {
+        return HibernateSessionFactory.getSessionFactory().openSession().get(AccountDataSet.class, login);
     }
 
-    public void save(Account account) {
-        Session session = HibernateSessionFactory.getSessionFactory().openSession();
-        Transaction transaction = session.beginTransaction();
-        transaction.commit();
-        session.close();
+    public void save(AccountDataSet account) {
+        try(Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.persist(account);
+            transaction.commit();
+        }
     }
 }
